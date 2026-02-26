@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message for You</title>
+    <style>
+        body {
+            background-color: #fdf2f2;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #game-instruction {
+            position: absolute;
+            top: 20px;
+            color: #b39292;
+            font-size: 1.2rem;
+            transition: opacity 0.5s;
+        }
+
+        /* The Moving Heart Target */
+        #heart-target {
+            position: absolute;
+            font-size: 50px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s ease;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            z-index: 10;
+        }
+
+        /* The Message Card */
+        #apology-card {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 20px;
+            border: 1px solid #ffe4e4;
+            animation: grow 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        h2 { color: #d68080; margin-top: 0; }
+        p { color: #555; line-height: 1.6; font-size: 1.1rem; }
+
+        @keyframes grow {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Subtle float animation for the heart */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-instruction">Catch my heart...</div>
+    <div id="heart-target" onclick="showApology()">❤️</div>
+
+    <div id="apology-card">
+        <h2>I'm so sorry.</h2>
+        <p>
+            I’m really sorry for hurting you. You mean more to me than I can explain, 
+            and it hurts knowing I caused you pain. 
+        </p>
+        <p>
+            Please forgive me — I truly care about you and I’ll do better.
+        </p>
+        <div style="font-size: 2rem;">🩹</div>
+    </div>
+
+    <script>
+        const heart = document.getElementById('heart-target');
+        const instruction = document.getElementById('game-instruction');
+        const card = document.getElementById('apology-card');
+
+        // Movement variables
+        let posX = Math.random() * (window.innerWidth - 100);
+        let posY = Math.random() * (window.innerHeight - 100);
+        let velX = 3;
+        let velY = 3;
+
+        function moveHeart() {
+            if (heart.style.display === 'none') return;
+
+            posX += velX;
+            posY += velY;
+
+            // Bounce off walls
+            if (posX + 60 > window.innerWidth || posX < 0) velX *= -1;
+            if (posY + 60 > window.innerHeight || posY < 0) velY *= -1;
+
+            heart.style.left = posX + 'px';
+            heart.style.top = posY + 'px';
+
+            requestAnimationFrame(moveHeart);
+        }
+
+        function showApology() {
+            heart.style.display = 'none';
+            instruction.style.opacity = '0';
+            card.style.display = 'block';
+            document.body.style.backgroundColor = "#fff";
+        }
+
+        // Start the game loop
+        moveHeart();
+    </script>
+</body>
+</html>
